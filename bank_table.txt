@@ -1,0 +1,309 @@
+CREATE TABLE EMPLOYEE(  
+   employee_id   INTEGER,  
+   name          VARCHAR(50),  
+   address       VARCHAR(255),  
+   phone_number  VARCHAR(15),  
+   branch_id     INTEGER  
+);  
+
+CREATE TABLE BRANCH(  
+   branch_id      INTEGER,  
+   name           VARCHAR(100),  
+   address        VARCHAR(255),  
+   contact_number VARCHAR(15)  
+);  
+
+CREATE TABLE ACCOUNT(  
+   account_number  INTEGER,  
+   balance         DECIMAL(12, 2),  
+   status          VARCHAR(20),  
+   account_type    VARCHAR(50),  
+   open_date       DATE,  
+   branch_id       INTEGER  
+);  
+
+CREATE TABLE CHEQUE(  
+   cheque_id      INTEGER,  
+   cheque_number  VARCHAR(50),  
+   amount         DECIMAL(12, 2),  
+   status         VARCHAR(20),  
+   issue_date     DATE,  
+   account_number INTEGER  
+);  
+
+CREATE TABLE TRANSACTION(  
+   transaction_id   INTEGER,  
+   transaction_type VARCHAR(50),  
+   amount          DECIMAL(12, 2),  
+   date            DATE,  
+   time            TIME,  
+   status          VARCHAR(20),  
+   account_number  INTEGER  
+);  
+
+CREATE TABLE CARD(  
+   card_number  VARCHAR(20),  
+   card_type    VARCHAR(20),  
+   expiry_date  DATE,  
+   cvv         INTEGER,  
+   status       VARCHAR(20),  
+   account_number INTEGER  
+);  
+
+CREATE TABLE ATM_TRANSACTION(  
+   atmtransaction_id INTEGER,  
+   amount           DECIMAL(12, 2),  
+   location         VARCHAR(255),  
+   date            DATE,  
+   time            TIME,  
+   card_number     VARCHAR(20)  
+);  
+
+CREATE TABLE CUSTOMER(  
+   customer_id      INTEGER,  
+   name            VARCHAR(100),  
+   email           VARCHAR(100),  
+   phone_number    VARCHAR(15),  
+   registration_date DATE,  
+   date_of_birth   DATE  
+);  
+
+CREATE TABLE LOAN(  
+   loan_id       INTEGER,  
+   amount        DECIMAL(12, 2),  
+   loan_type     VARCHAR(50),  
+   approval_date DATE,  
+   interest_rate DECIMAL(5, 2),  
+   status        VARCHAR(20),  
+   customer_id   INTEGER  
+);  
+
+CREATE TABLE LOAN_PAYMENT(  
+   payment_id    INTEGER,  
+   amount        DECIMAL(12, 2),  
+   status        VARCHAR(20),  
+   payment_date  DATE,  
+   loan_id       INTEGER  
+);  
+
+CREATE TABLE FIXED_DEPOSIT(  
+   fd_id          INTEGER,  
+   amount        DECIMAL(12, 2),  
+   maturity_date DATE,  
+   interest_rate DECIMAL(5, 2),  
+   status        VARCHAR(20),  
+   customer_id   INTEGER  
+);  
+
+CREATE TABLE CUSTOMER_SERVICE(  
+   service_id       INTEGER,  
+   issue           VARCHAR(255),  
+   resolution_date DATE,  
+   status          VARCHAR(20),  
+   customer_id     INTEGER  
+);  
+
+-- Primary Keys  
+ALTER TABLE EMPLOYEE  
+   ADD CONSTRAINT emp_pk  
+   PRIMARY KEY (employee_id);  
+
+ALTER TABLE BRANCH  
+   ADD CONSTRAINT branch_pk  
+   PRIMARY KEY (branch_id);  
+
+ALTER TABLE ACCOUNT  
+   ADD CONSTRAINT account_pk  
+   PRIMARY KEY (account_number);  
+
+ALTER TABLE CHEQUE  
+   ADD CONSTRAINT cheque_pk  
+   PRIMARY KEY (cheque_id);  
+
+ALTER TABLE TRANSACTION  
+   ADD CONSTRAINT transaction_pk  
+   PRIMARY KEY (transaction_id);  
+
+ALTER TABLE CARD  
+   ADD CONSTRAINT card_pk  
+   PRIMARY KEY (card_number);  
+
+ALTER TABLE ATM_TRANSACTION  
+   ADD CONSTRAINT atm_transaction_pk  
+   PRIMARY KEY (atmtransaction_id);  
+
+ALTER TABLE CUSTOMER  
+   ADD CONSTRAINT customer_pk  
+   PRIMARY KEY (customer_id);  
+
+ALTER TABLE LOAN  
+   ADD CONSTRAINT loan_pk  
+   PRIMARY KEY (loan_id);  
+
+ALTER TABLE LOAN_PAYMENT  
+   ADD CONSTRAINT loan_payment_pk  
+   PRIMARY KEY (payment_id);  
+
+ALTER TABLE FIXED_DEPOSIT  
+   ADD CONSTRAINT fd_pk  
+   PRIMARY KEY (fd_id);  
+
+ALTER TABLE CUSTOMER_SERVICE  
+   ADD CONSTRAINT service_pk  
+   PRIMARY KEY (service_id);  
+
+-- EMPLOYEE to BRANCH  
+ALTER TABLE EMPLOYEE  
+   ADD CONSTRAINT emp_branch_fk  
+   FOREIGN KEY (branch_id)  
+   REFERENCES BRANCH (branch_id);  
+
+-- ACCOUNT to BRANCH  
+ALTER TABLE ACCOUNT  
+   ADD CONSTRAINT account_branch_fk  
+   FOREIGN KEY (branch_id)  
+   REFERENCES BRANCH (branch_id);  
+
+-- CHEQUE to ACCOUNT  
+ALTER TABLE CHEQUE  
+   ADD CONSTRAINT cheque_account_fk  
+   FOREIGN KEY (account_number)  
+   REFERENCES ACCOUNT (account_number);  
+
+-- TRANSACTION to ACCOUNT  
+ALTER TABLE TRANSACTION  
+   ADD CONSTRAINT transaction_account_fk  
+   FOREIGN KEY (account_number)  
+   REFERENCES ACCOUNT (account_number);  
+
+-- CARD to ACCOUNT  
+ALTER TABLE CARD  
+   ADD CONSTRAINT card_account_fk  
+   FOREIGN KEY (account_number)  
+   REFERENCES ACCOUNT (account_number);  
+
+-- ATM_TRANSACTION to CARD  
+ALTER TABLE ATM_TRANSACTION  
+   ADD CONSTRAINT atm_card_fk  
+   FOREIGN KEY (card_number)  
+   REFERENCES CARD (card_number);  
+
+-- LOAN to CUSTOMER  
+ALTER TABLE LOAN  
+   ADD CONSTRAINT loan_customer_fk  
+   FOREIGN KEY (customer_id)  
+   REFERENCES CUSTOMER (customer_id);  
+
+-- LOAN_PAYMENT to LOAN  
+ALTER TABLE LOAN_PAYMENT  
+   ADD CONSTRAINT payment_loan_fk  
+   FOREIGN KEY (loan_id)  
+   REFERENCES LOAN (loan_id);  
+
+-- FIXED_DEPOSIT to CUSTOMER  
+ALTER TABLE FIXED_DEPOSIT  
+   ADD CONSTRAINT fd_customer_fk  
+   FOREIGN KEY (customer_id)  
+   REFERENCES CUSTOMER (customer_id);  
+
+-- CUSTOMER_SERVICE to CUSTOMER  
+ALTER TABLE CUSTOMER_SERVICE  
+   ADD CONSTRAINT service_customer_fk  
+   FOREIGN KEY (customer_id)  
+   REFERENCES CUSTOMER (customer_id);
+
+-- Insert data into BRANCH  
+INSERT INTO BRANCH (branch_id, name, address, contact_number) VALUES  
+(101, 'Downtown', '123 Main St', '1112223333'),  
+(102, 'Uptown', '456 Elm St', '4445556666'),  
+(103, 'Westside', '789 Oak St', '7778889999'),  
+(104, 'Eastside', '321 Pine St', '1231231234'),  
+(105, 'Central', '654 Maple St', '5675675678');  
+
+-- Insert data into EMPLOYEE  
+INSERT INTO EMPLOYEE (employee_id, name, address, phone_number, branch_id) VALUES  
+(1, 'Alice', '123 Main St', '1234567890', 101),  
+(2, 'Bob', '456 Elm St', '9876543210', 102),  
+(3, 'Charlie', '789 Oak St', '5556667777', 101),  
+(4, 'David', '321 Pine St', '1112223333', 103),  
+(5, 'Eve', '654 Maple St', '4445556666', 102);  
+
+-- Insert data into ACCOUNT  
+INSERT INTO ACCOUNT (account_number, balance, status, account_type, open_date, branch_id) VALUES  
+(1001, 5000.00, 'Active', 'Savings', '2024-01-01', 101),  
+(1002, 10000.00, 'Active', 'Checking', '2023-12-15', 102),  
+(1003, 7500.00, 'Inactive', 'Savings', '2024-02-10', 103),  
+(1004, 2000.00, 'Active', 'Checking', '2024-03-05', 101),  
+(1005, 15000.00, 'Active', 'Savings', '2023-11-20', 102);  
+
+-- Insert data into CHEQUE  
+INSERT INTO CHEQUE (cheque_id, cheque_number, amount, status, issue_date, account_number) VALUES  
+(1, 'CHK001', 500.00, 'Cleared', '2024-03-10', 1001),  
+(2, 'CHK002', 1000.00, 'Pending', '2024-03-11', 1002),  
+(3, 'CHK003', 750.00, 'Cleared', '2024-03-12', 1003),  
+(4, 'CHK004', 200.00, 'Bounced', '2024-03-13', 1004),  
+(5, 'CHK005', 1500.00, 'Cleared', '2024-03-14', 1005);  
+
+-- Insert data into TRANSACTION  
+INSERT INTO TRANSACTION (transaction_id, transaction_type, amount, date, time, status, account_number) VALUES  
+(1, 'Deposit', 2000.00, '2024-03-01', '10:00:00', 'Successful', 1001),  
+(2, 'Withdrawal', 500.00, '2024-03-02', '11:30:00', 'Failed', 1002),  
+(3, 'Deposit', 3000.00, '2024-03-03', '12:45:00', 'Successful', 1003),  
+(4, 'Transfer', 1500.00, '2024-03-04', '14:20:00', 'Pending', 1004),  
+(5, 'Deposit', 5000.00, '2024-03-05', '16:10:00', 'Successful', 1005);  
+
+-- Insert data into CARD  
+INSERT INTO CARD (card_number, card_type, expiry_date, cvv, status, account_number) VALUES  
+('1111222233334444', 'Debit', '2026-05-31', 123, 'Active', 1001),  
+('5555666677778888', 'Credit', '2027-08-15', 456, 'Active', 1002),  
+('9999000011112222', 'Debit', '2025-12-10', 789, 'Inactive', 1003),  
+('3333444455556666', 'Credit', '2026-09-20', 234, 'Active', 1004),  
+('7777888899990000', 'Debit', '2027-04-05', 567, 'Active', 1005);  
+
+-- Insert data into ATM_TRANSACTION  
+INSERT INTO ATM_TRANSACTION (atmtransaction_id, amount, location, date, time, card_number) VALUES  
+(1, 500.00, 'Downtown ATM', '2024-03-01', '10:30:00', '1111222233334444'),  
+(2, 1000.00, 'Uptown ATM', '2024-03-02', '11:45:00', '5555666677778888'),  
+(3, 750.00, 'Westside ATM', '2024-03-03', '13:00:00', '9999000011112222'),  
+(4, 200.00, 'Eastside ATM', '2024-03-04', '15:15:00', '3333444455556666'),  
+(5, 1500.00, 'Central ATM', '2024-03-05', '17:25:00', '7777888899990000');  
+
+-- Insert data into CUSTOMER  
+INSERT INTO CUSTOMER (customer_id, name, email, phone_number, registration_date, date_of_birth) VALUES  
+(1, 'John Doe', 'john@example.com', '1112223333', '2023-01-01', '1990-05-15'),  
+(2, 'Jane Smith', 'jane@example.com', '4445556666', '2023-02-10', '1985-08-20'),  
+(3, 'Michael Brown', 'michael@example.com', '7778889999', '2023-03-15', '1992-07-25'),  
+(4, 'Emily White', 'emily@example.com', '1231231234', '2023-04-20', '1988-09-30'),  
+(5, 'David Green', 'david@example.com', '5675675678', '2023-05-25', '1995-11-05');  
+
+-- Insert data into LOAN  
+INSERT INTO LOAN (loan_id, amount, loan_type, approval_date, interest_rate, status, customer_id) VALUES  
+(1, 10000.00, 'Personal', '2024-01-01', 5.5, 'Approved', 1),  
+(2, 20000.00, 'Home', '2024-02-10', 4.8, 'Approved', 2),  
+(3, 15000.00, 'Auto', '2024-03-15', 6.2, 'Pending', 3),  
+(4, 5000.00, 'Education', '2024-04-20', 3.9, 'Approved', 4),  
+(5, 25000.00, 'Business', '2024-05-25', 7.0, 'Pending', 5);  
+
+-- Insert data into LOAN_PAYMENT  
+INSERT INTO LOAN_PAYMENT (payment_id, amount, status, payment_date, loan_id) VALUES  
+(1, 500.00, 'Completed', '2024-03-10', 1),  
+(2, 1000.00, 'Pending', '2024-03-15', 2),  
+(3, 750.00, 'Completed', '2024-03-20', 3),  
+(4, 200.00, 'Failed', '2024-03-25', 4),  
+(5, 1500.00, 'Completed', '2024-03-30', 5);  
+
+-- Insert data into FIXED_DEPOSIT  
+INSERT INTO FIXED_DEPOSIT (fd_id, amount, maturity_date, interest_rate, status, customer_id) VALUES  
+(1, 5000.00, '2026-01-01', 4.0, 'Active', 1),  
+(2, 10000.00, '2027-02-10', 4.5, 'Active', 2),  
+(3, 7500.00, '2025-03-15', 3.8, 'Closed', 3),  
+(4, 2000.00, '2028-04-20', 5.2, 'Active', 4),  
+(5, 15000.00, '2026-05-25', 4.1, 'Active', 5);  
+
+-- Insert data into CUSTOMER_SERVICE  
+INSERT INTO CUSTOMER_SERVICE (service_id, issue, resolution_date, status, customer_id) VALUES  
+(1, 'Card lost', '2024-03-05', 'Resolved', 1),  
+(2, 'Unauthorized transaction', '2024-03-10', 'Pending', 2),  
+(3, 'Loan statement request', '2024-03-15', 'Resolved', 3),  
+(4, 'Account closure request', '2024-03-20', 'In Progress', 4),  
+(5, 'Cheque bounce inquiry', '2024-03-25', 'Resolved', 5);
